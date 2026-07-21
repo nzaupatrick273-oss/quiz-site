@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🎯 Quiz Master Pro</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="background" aria-hidden="true">
+        <span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+        <span></span>
+    </div>
+
+    <div class="quiz-container">
+        <!-- Title -->
+        <h1>🎯 Quiz Master</h1>
+
+        <!-- START SCREEN -->
+        <div class="start-screen" id="startScreen">
+            <div class="settings-card">
+                <div class="form-group">
+                    <label for="category">📚 Category</label>
+                    <select id="category">
+                           <option value="bible">📖 Bible</option>
+                           <option value="general">🎲 General Knowledge</option>
+                           <option value="music">🎵 Music</option>
+                           <option value="movies">🎬 Movies</option>
+                           <option value="religion">🕊️ Religion</option>
+                           <option value="travel">✈️ Travel</option>
+                           <option value="physics">🔬 Physics</option>
+                           <option value="survey">📊 Survey</option>
+                           <option value="online">🌐 Online</option>
+                           <option value="etiquette">🤝 Etiquette</option>
+                           <option value="talents">🎭 Talents</option>
+                           <option value="geography">🌍 Geography</option>
+                           <option value="technology">💻 Technology</option>
+                           <option value="history">📜 History</option>
+                      </select>
+                      
+                </div>
+
+                <div class="form-group">
+                    <label for="difficulty">📊 Difficulty</label>
+                    <select id="difficulty">
+                        <option value="easy">🟢 Easy</option>
+                        <option value="medium">🟡 Medium</option>
+                        <option value="hard">🔴 Hard</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="timeLimit">⏱️ Time Limit</label>
+                    <select id="timeLimit">
+                        <option value="15">15 seconds</option>
+                        <option value="30" selected>30 seconds</option>
+                        <option value="45">45 seconds</option>
+                        <option value="60">60 seconds</option>
+                    </select>
+                </div>
+
+                <button onclick="startSelectedQuiz()" class="btn-primary">
+                    🚀 Start Quiz
+                </button>
+            </div>
+        </div>
+
+        <!-- QUIZ SCREEN -->
+        <div id="quizArea" class="quiz-area" style="display:none;">
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill"></div>
+                </div>
+                <div class="progress-text">
+                    <span id="questionCounter">1 / 20</span>
+                    <span id="scoreDisplay">⭐ 0</span>
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="quiz-controls">
+                <button id="pauseBtn" onclick="togglePause()" class="btn-pause">
+                    ⏸️ Pause
+                </button>
+                <div id="timer" class="timer">⏱️ 30s</div>
+            </div>
+
+            <!-- Question -->
+            <h2 id="question" class="question-text">Loading...</h2>
+
+            <!-- Answers -->
+            <div id="answers" class="answers-container"></div>
+        </div>
+
+        <!-- RESULT SCREEN (initially hidden) -->
+        <div id="resultScreen" class="result-screen" style="display:none;">
+            <div class="result-card">
+                <h2 id="resultTitle">🎉 Quiz Complete!</h2>
+                <div class="score-circle">
+                    <span id="finalScore">0</span>
+                    <span class="total">/ 20</span>
+                </div>
+                <p id="resultMessage" class="result-message">Great job!</p>
+                <div class="result-stats">
+                    <div class="stat">
+                        <span>✅ Correct</span>
+                        <strong id="correctCount">0</strong>
+                    </div>
+                    <div class="stat">
+                        <span>❌ Wrong</span>
+                        <strong id="wrongCount">0</strong>
+                    </div>
+                    <div class="stat">
+                        <span>📊 Accuracy</span>
+                        <strong id="accuracy">0%</strong>
+                    </div>
+                </div>
+                <button onclick="location.reload()" class="btn-primary">
+                    🔄 Play Again
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
