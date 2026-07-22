@@ -427,7 +427,7 @@ QUESTION_BANK.history = {
 };
 
 // ============================================
-// THEME CONFIGURATION (6 New Themes Added)
+// THEME CONFIGURATION
 // ============================================
 const themeConfig = {
     default: {
@@ -435,49 +435,70 @@ const themeConfig = {
         spans: ['#f093fb', '#4facfe', '#43e97b', '#fa709a'],
         font: "'Segoe UI', sans-serif",
         glow: 'none',
-        particles: 'none'
+        particles: 'none',
+        cursor: 'default',
+        music: { frequency: 261.63, type: 'sine', duration: 0.5, loop: false },
+        ambient: null
     },
     galaxy: {
         bg: ['#0f0c29', '#302b63', '#24243e'],
         spans: ['#00d2ff', '#3a7bd5', '#f093fb', '#4facfe'],
         font: "'Orbitron', sans-serif",
         glow: '0 0 20px rgba(0, 210, 255, 0.3)',
-        particles: 'stars'
+        particles: 'stars',
+        cursor: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'32\' height=\'32\' viewBox=\'0 0 32 32\'%3E%3Ccircle cx=\'16\' cy=\'16\' r=\'10\' fill=\'rgba(0,210,255,0.5)\' stroke=\'%2300d2ff\' stroke-width=\'2\'/%3E%3Ccircle cx=\'16\' cy=\'16\' r=\'2\' fill=\'%2300d2ff\'/%3E%3C/svg%3E") 16 16, auto',
+        music: { frequency: 392.00, type: 'sine', duration: 1.5, loop: false },
+        ambient: { type: 'synth', frequency: 130.81, duration: 2.0 }
     },
     ocean: {
         bg: ['#006994', '#0077be', '#00a8cc'],
         spans: ['#00d2ff', '#0099cc', '#66ccff', '#33b5e5'],
         font: "'Quicksand', sans-serif",
         glow: '0 0 20px rgba(0, 210, 255, 0.2)',
-        particles: 'bubbles'
+        particles: 'bubbles',
+        cursor: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'32\' height=\'32\' viewBox=\'0 0 32 32\'%3E%3Ccircle cx=\'16\' cy=\'16\' r=\'10\' fill=\'rgba(0,210,255,0.3)\' stroke=\'%2300d2ff\' stroke-width=\'2\'/%3E%3Cpath d=\'M16 8 L18 12 L22 12 L19 15 L20 19 L16 16 L12 19 L13 15 L10 12 L14 12 Z\' fill=\'%2300d2ff\'/%3E%3C/svg%3E") 16 16, auto',
+        music: { frequency: 440.00, type: 'sine', duration: 1.8, loop: false },
+        ambient: { type: 'waves', frequency: 220.00, duration: 3.0 }
     },
     forest: {
         bg: ['#134e5e', '#71b280', '#2c5e2e'],
         spans: ['#2ecc71', '#27ae60', '#1abc9c', '#16a085'],
         font: "'Merriweather', serif",
         glow: '0 0 20px rgba(46, 204, 113, 0.3)',
-        particles: 'fireflies'
+        particles: 'fireflies',
+        cursor: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'32\' height=\'32\' viewBox=\'0 0 32 32\'%3E%3Cpath d=\'M16 4 L18 10 L24 10 L19 14 L21 20 L16 16 L11 20 L13 14 L8 10 L14 10 Z\' fill=\'%232ecc71\' stroke=\'%232ecc71\' stroke-width=\'1\'/%3E%3C/svg%3E") 16 16, auto',
+        music: { frequency: 523.25, type: 'triangle', duration: 2.0, loop: false },
+        ambient: { type: 'birds', frequency: 659.25, duration: 2.5 }
     },
     neon: {
         bg: ['#0d0d0d', '#1a1a2e', '#16213e'],
         spans: ['#ff00ff', '#00ffff', '#ff6b6b', '#ffd93d'],
         font: "'Press Start 2P', cursive",
         glow: '0 0 30px rgba(255, 0, 255, 0.5)',
-        particles: 'neon'
+        particles: 'neon',
+        cursor: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'32\' height=\'32\' viewBox=\'0 0 32 32\'%3E%3Crect x=\'6\' y=\'6\' width=\'20\' height=\'20\' fill=\'rgba(255,0,255,0.3)\' stroke=\'%23ff00ff\' stroke-width=\'3\'/%3E%3Crect x=\'10\' y=\'10\' width=\'12\' height=\'12\' fill=\'rgba(0,255,255,0.2)\' stroke=\'%2300ffff\' stroke-width=\'2\'/%3E%3C/svg%3E") 16 16, auto',
+        music: { frequency: 783.99, type: 'square', duration: 0.8, loop: false },
+        ambient: { type: 'hum', frequency: 220.00, duration: 2.0 }
     },
     fire: {
         bg: ['#ff4500', '#ff6347', '#ff7f50'],
         spans: ['#ff6b35', '#f7931e', '#ff4757', '#ff6348'],
         font: "'Bangers', cursive",
         glow: '0 0 25px rgba(255, 69, 0, 0.4)',
-        particles: 'embers'
+        particles: 'embers',
+        cursor: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'32\' height=\'32\' viewBox=\'0 0 32 32\'%3E%3Cpath d=\'M16 4 C10 10 8 16 16 22 C24 16 22 10 16 4 Z\' fill=\'rgba(255,69,0,0.4)\' stroke=\'%23ff4500\' stroke-width=\'2\'/%3E%3C/svg%3E") 16 16, auto',
+        music: { frequency: 587.33, type: 'sawtooth', duration: 1.2, loop: false },
+        ambient: { type: 'fire', frequency: 100.00, duration: 2.0 }
     },
     ice: {
         bg: ['#a1c4fd', '#c2e9fb', '#e0f7fa'],
         spans: ['#4fc3f7', '#81d4fa', '#b3e5fc', '#e1f5fe'],
         font: "'Raleway', sans-serif",
         glow: '0 0 20px rgba(79, 195, 247, 0.3)',
-        particles: 'snowflakes'
+        particles: 'snowflakes',
+        cursor: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'32\' height=\'32\' viewBox=\'0 0 32 32\'%3E%3Cpath d=\'M16 4 L18 10 L24 10 L19 14 L21 20 L16 16 L11 20 L13 14 L8 10 L14 10 Z\' fill=\'rgba(79,195,247,0.4)\' stroke=\'%234fc3f7\' stroke-width=\'2\'/%3E%3C/svg%3E") 16 16, auto',
+        music: { frequency: 659.25, type: 'sine', duration: 1.5, loop: false },
+        ambient: { type: 'wind', frequency: 130.81, duration: 3.0 }
     }
 };
 
@@ -497,7 +518,11 @@ const state = {
     difficulty: 'easy',
     category: 'general',
     selectedTheme: 'default',
-    particleInterval: null
+    particleInterval: null,
+    musicInterval: null,
+    ambientInterval: null,
+    audioContext: null,
+    isPlayingMusic: false
 };
 
 // DOM Elements
@@ -523,50 +548,115 @@ const DOM = {
 const LETTERS = ['A', 'B', 'C', 'D'];
 
 // ============================================
-// SOUND EFFECTS (Audio Context)
+// AUDIO ENGINE
 // ============================================
-let audioContext = null;
-
 function initAudio() {
-    if (!audioContext) {
-        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    if (!state.audioContext) {
+        state.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    return state.audioContext;
+}
+
+function playSound(frequency, duration = 0.5, type = 'sine', volume = 0.15, delay = 0) {
+    try {
+        const ctx = initAudio();
+        const oscillator = ctx.createOscillator();
+        const gainNode = ctx.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(ctx.destination);
+        
+        oscillator.type = type;
+        oscillator.frequency.value = frequency;
+        
+        const startTime = ctx.currentTime + delay;
+        gainNode.gain.setValueAtTime(0, startTime);
+        gainNode.gain.linearRampToValueAtTime(volume, startTime + 0.05);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+        
+        oscillator.start(startTime);
+        oscillator.stop(startTime + duration);
+        
+        return { oscillator, gainNode };
+    } catch (e) {
+        console.log('Audio not available');
+        return null;
     }
 }
 
-function playThemeSound(themeName) {
-    try {
-        initAudio();
+function playAmbientSound(type, frequency, duration) {
+    if (state.ambientInterval) {
+        clearInterval(state.ambientInterval);
+        state.ambientInterval = null;
+    }
+    
+    if (type === 'none' || !type) return;
+    
+    // Create ambient sound loop
+    state.ambientInterval = setInterval(() => {
+        if (state.isPaused || !state.gameActive) return;
         
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
+        const variation = frequency + (Math.random() - 0.5) * 20;
+        const vol = 0.05 + Math.random() * 0.03;
+        const dur = duration * (0.8 + Math.random() * 0.4);
         
-        oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
+        playSound(variation, dur, 'sine', vol);
         
-        // Different sounds for different themes
-        const soundMap = {
-            'galaxy': { frequency: 523.25, duration: 0.3, type: 'sine' },    // C5
-            'ocean': { frequency: 392.00, duration: 0.4, type: 'sine' },      // G4
-            'forest': { frequency: 659.25, duration: 0.3, type: 'triangle' }, // E5
-            'neon': { frequency: 783.99, duration: 0.2, type: 'square' },     // G5
-            'fire': { frequency: 440.00, duration: 0.25, type: 'sawtooth' },  // A4
-            'ice': { frequency: 587.33, duration: 0.35, type: 'sine' },       // D5
-            'default': { frequency: 523.25, duration: 0.3, type: 'sine' }     // C5
-        };
+        // Add subtle variations
+        if (type === 'waves') {
+            // Add second harmonic
+            setTimeout(() => {
+                playSound(variation * 1.5, dur * 0.7, 'sine', vol * 0.5);
+            }, 100);
+        } else if (type === 'fire') {
+            // Crackling effect
+            setTimeout(() => {
+                playSound(variation * 2 + 50, 0.05, 'sawtooth', vol * 0.3);
+            }, 50);
+        } else if (type === 'birds') {
+            // Bird chirps
+            setTimeout(() => {
+                playSound(variation * 1.3, 0.2, 'triangle', vol * 0.8);
+            }, 200);
+        }
+    }, duration * 1000 * 0.8);
+}
+
+function playThemeMusic(themeName) {
+    const theme = themeConfig[themeName] || themeConfig.default;
+    const music = theme.music;
+    
+    if (state.musicInterval) {
+        clearInterval(state.musicInterval);
+        state.musicInterval = null;
+    }
+    
+    if (!music || !music.frequency) return;
+    
+    // Play background music during quiz
+    state.musicInterval = setInterval(() => {
+        if (!state.gameActive || state.isPaused) return;
         
-        const sound = soundMap[themeName] || soundMap.default;
-        
-        oscillator.type = sound.type;
-        oscillator.frequency.value = sound.frequency;
-        
-        gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + sound.duration);
-        
-        oscillator.start(audioContext.currentTime);
-        oscillator.stop(audioContext.currentTime + sound.duration);
-        
-    } catch (e) {
-        console.log('Audio not available');
+        const variation = music.frequency + (Math.random() - 0.5) * 5;
+        playSound(variation, music.duration, music.type, 0.08);
+    }, 3000);
+}
+
+function playClickEffect(isCorrect) {
+    const frequency = isCorrect ? 523.25 : 293.66; // C5 for correct, D4 for wrong
+    const type = isCorrect ? 'sine' : 'sawtooth';
+    const duration = isCorrect ? 0.3 : 0.4;
+    const volume = isCorrect ? 0.2 : 0.15;
+    
+    playSound(frequency, duration, type, volume);
+    
+    if (isCorrect) {
+        // Add a happy chord for correct answers
+        setTimeout(() => playSound(659.25, 0.2, 'sine', 0.12), 100);
+        setTimeout(() => playSound(783.99, 0.3, 'sine', 0.08), 200);
+    } else {
+        // Add a sad sound for wrong answers
+        setTimeout(() => playSound(261.63, 0.3, 'sawtooth', 0.1), 150);
     }
 }
 
@@ -604,9 +694,13 @@ function clearParticles() {
     }
 }
 
-function createParticle(type, container) {
+function createParticle(type, container, x = null, y = null) {
     const particle = document.createElement('div');
     const size = Math.random() * 4 + 2;
+    
+    // For click effects, use provided coordinates
+    const left = x !== null ? x : Math.random() * 100;
+    const top = y !== null ? y : Math.random() * 100;
     
     const styles = {
         stars: {
@@ -619,8 +713,8 @@ function createParticle(type, container) {
                 box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
                 animation: starFloat ${5 + Math.random() * 5}s linear infinite;
                 opacity: ${0.3 + Math.random() * 0.7};
-                left: ${Math.random() * 100}%;
-                top: ${Math.random() * 100}%;
+                left: ${left}%;
+                top: ${top}%;
             `
         },
         bubbles: {
@@ -632,8 +726,8 @@ function createParticle(type, container) {
                 border-radius: 50%;
                 border: 1px solid rgba(255, 255, 255, 0.3);
                 animation: bubbleFloat ${6 + Math.random() * 4}s linear infinite;
-                left: ${Math.random() * 100}%;
-                bottom: -10%;
+                left: ${left}%;
+                bottom: ${top < 50 ? -10 : 110}%;
             `
         },
         fireflies: {
@@ -645,8 +739,8 @@ function createParticle(type, container) {
                 border-radius: 50%;
                 box-shadow: 0 0 20px rgba(46, 204, 113, 0.8), 0 0 40px rgba(46, 204, 113, 0.4);
                 animation: fireflyFloat ${4 + Math.random() * 6}s ease-in-out infinite;
-                left: ${Math.random() * 100}%;
-                top: ${Math.random() * 100}%;
+                left: ${left}%;
+                top: ${top}%;
                 opacity: ${0.5 + Math.random() * 0.5};
             `
         },
@@ -659,8 +753,8 @@ function createParticle(type, container) {
                 border-radius: 50%;
                 box-shadow: 0 0 30px currentColor, 0 0 60px currentColor;
                 animation: neonFloat ${3 + Math.random() * 3}s linear infinite;
-                left: ${Math.random() * 100}%;
-                top: ${Math.random() * 100}%;
+                left: ${left}%;
+                top: ${top}%;
                 opacity: ${0.6 + Math.random() * 0.4};
             `
         },
@@ -673,8 +767,8 @@ function createParticle(type, container) {
                 border-radius: 50%;
                 box-shadow: 0 0 15px rgba(255, 69, 0, 0.8);
                 animation: emberFloat ${3 + Math.random() * 4}s ease-out infinite;
-                left: ${Math.random() * 100}%;
-                bottom: -10%;
+                left: ${left}%;
+                bottom: ${top < 50 ? -10 : 110}%;
             `
         },
         snowflakes: {
@@ -686,8 +780,8 @@ function createParticle(type, container) {
                 border-radius: 50%;
                 box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
                 animation: snowFloat ${8 + Math.random() * 5}s linear infinite;
-                left: ${Math.random() * 100}%;
-                top: -10%;
+                left: ${left}%;
+                top: ${top < 50 ? -10 : 110}%;
                 opacity: ${0.5 + Math.random() * 0.5};
             `
         }
@@ -721,6 +815,53 @@ function startParticles(type) {
 }
 
 // ============================================
+// CLICK PARTICLE EFFECTS
+// ============================================
+function createClickParticles(x, y, isCorrect) {
+    const container = createParticlesContainer();
+    const type = state.selectedTheme === 'default' ? 'stars' : themeConfig[state.selectedTheme]?.particles || 'stars';
+    const count = isCorrect ? 20 : 12;
+    const colors = isCorrect 
+        ? ['#00ff00', '#00cc00', '#66ff66', '#33ff33'] 
+        : ['#ff0000', '#cc0000', '#ff3333', '#ff6666'];
+    
+    for (let i = 0; i < count; i++) {
+        const particle = document.createElement('div');
+        const size = Math.random() * 8 + 4;
+        const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5);
+        const distance = 50 + Math.random() * 80;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        
+        particle.style.cssText = `
+            position: fixed;
+            width: ${size}px;
+            height: ${size}px;
+            background: ${color};
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000;
+            left: ${x}px;
+            top: ${y}px;
+            box-shadow: 0 0 20px ${color};
+            transition: all ${0.5 + Math.random() * 0.5}s ease-out;
+        `;
+        
+        document.body.appendChild(particle);
+        
+        // Animate particle
+        requestAnimationFrame(() => {
+            particle.style.transform = `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(${0.5 + Math.random() * 0.5})`;
+            particle.style.opacity = '0';
+        });
+        
+        // Remove particle after animation
+        setTimeout(() => {
+            particle.remove();
+        }, 1000);
+    }
+}
+
+// ============================================
 // THEME FUNCTIONS
 // ============================================
 function applyTheme(themeName) {
@@ -741,6 +882,9 @@ function applyTheme(themeName) {
     // Apply theme-specific fonts
     document.documentElement.style.setProperty('--theme-font', theme.font);
     document.documentElement.style.setProperty('--theme-glow', theme.glow);
+    
+    // Apply theme cursor
+    document.body.style.cursor = theme.cursor || 'default';
     
     // Add theme class to body
     document.body.className = `theme-${themeName}`;
@@ -768,8 +912,15 @@ function applyTheme(themeName) {
     // Start particles
     startParticles(theme.particles);
     
-    // Play theme sound
-    playThemeSound(themeName);
+    // Play ambient sound
+    if (theme.ambient) {
+        playAmbientSound(theme.ambient.type, theme.ambient.frequency, theme.ambient.duration);
+    }
+    
+    // Play theme music if quiz is active
+    if (state.gameActive) {
+        playThemeMusic(themeName);
+    }
     
     state.selectedTheme = themeName;
 }
@@ -822,6 +973,9 @@ function startSelectedQuiz() {
     DOM.startScreen.style.display = 'none';
     DOM.quizArea.style.display = 'block';
     DOM.resultScreen.style.display = 'none';
+
+    // Start background music
+    playThemeMusic(theme);
 
     // Start timer
     startGlobalTimer(state.timeLeft);
@@ -941,6 +1095,17 @@ function selectAnswer(selectedBtn) {
         }
     });
 
+    // Get click position for particle effect
+    const rect = selectedBtn.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+
+    // Play click sound
+    playClickEffect(isCorrect);
+
+    // Create click particles
+    createClickParticles(x, y, isCorrect);
+
     if (isCorrect) {
         selectedBtn.classList.add('correct');
         state.score++;
@@ -1025,7 +1190,10 @@ function togglePause() {
 // ============================================
 function endQuiz() {
     clearInterval(state.timer);
+    clearInterval(state.musicInterval);
+    clearInterval(state.ambientInterval);
     state.gameActive = false;
+    state.isPlayingMusic = false;
 
     DOM.quizArea.style.display = 'none';
     DOM.resultScreen.style.display = 'block';
@@ -1105,7 +1273,10 @@ function resetToStart() {
     DOM.resultScreen.style.display = 'none';
     DOM.startScreen.style.display = 'block';
     state.gameActive = false;
+    state.isPlayingMusic = false;
     clearInterval(state.timer);
+    clearInterval(state.musicInterval);
+    clearInterval(state.ambientInterval);
     clearParticles();
 }
 
@@ -1120,7 +1291,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         body {
             font-family: var(--theme-font, 'Segoe UI', sans-serif);
-            transition: font-family 0.5s ease;
+            transition: font-family 0.5s ease, cursor 0.3s ease;
         }
         
         .settings-card, .result-card, .quiz-area {
@@ -1215,5 +1386,7 @@ console.log('🎯 Mega Quiz App loaded!');
 console.log(`📚 Categories: ${Object.keys(QUESTION_BANK).join(', ')}`);
 console.log('🎨 Themes: Galaxy, Ocean, Forest, Neon, Fire, Ice');
 console.log('💡 Keyboard shortcuts: 1-4 for answers, Space to pause, Enter to start');
-console.log('🔊 Sound effects enabled for theme switching');
+console.log('🔊 Sound effects enabled for theme switching and answers');
 console.log('✨ Particle effects enabled for each theme');
+console.log('🎵 Background music playing during quiz');
+console.log('🌊 Ambient sounds: Waves, Fire, Birds, Wind, Synth, Hum');
