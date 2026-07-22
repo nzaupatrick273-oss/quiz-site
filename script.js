@@ -427,6 +427,40 @@ QUESTION_BANK.history = {
 };
 
 // ============================================
+// THEME CONFIGURATION (6 New Themes Added)
+// ============================================
+const themeConfig = {
+    default: {
+        bg: ['#667eea', '#764ba2', '#f093fb'],
+        spans: ['#f093fb', '#4facfe', '#43e97b', '#fa709a']
+    },
+    galaxy: {
+        bg: ['#0f0c29', '#302b63', '#24243e'],
+        spans: ['#00d2ff', '#3a7bd5', '#f093fb', '#4facfe']
+    },
+    ocean: {
+        bg: ['#006994', '#0077be', '#00a8cc'],
+        spans: ['#00d2ff', '#0099cc', '#66ccff', '#33b5e5']
+    },
+    forest: {
+        bg: ['#134e5e', '#71b280', '#2c5e2e'],
+        spans: ['#2ecc71', '#27ae60', '#1abc9c', '#16a085']
+    },
+    neon: {
+        bg: ['#0d0d0d', '#1a1a2e', '#16213e'],
+        spans: ['#ff00ff', '#00ffff', '#ff6b6b', '#ffd93d']
+    },
+    fire: {
+        bg: ['#ff4500', '#ff6347', '#ff7f50'],
+        spans: ['#ff6b35', '#f7931e', '#ff4757', '#ff6348']
+    },
+    ice: {
+        bg: ['#a1c4fd', '#c2e9fb', '#e0f7fa'],
+        spans: ['#4fc3f7', '#81d4fa', '#b3e5fc', '#e1f5fe']
+    }
+};
+
+// ============================================
 // STATE MANAGEMENT
 // ============================================
 const state = {
@@ -440,7 +474,8 @@ const state = {
     isPaused: false,
     totalQuestions: 0,
     difficulty: 'easy',
-    category: 'general'
+    category: 'general',
+    selectedTheme: 'default'
 };
 
 // DOM Elements
@@ -464,6 +499,29 @@ const DOM = {
 };
 
 const LETTERS = ['A', 'B', 'C', 'D'];
+
+// ============================================
+// THEME FUNCTIONS
+// ============================================
+function applyTheme(themeName) {
+    const theme = themeConfig[themeName] || themeConfig.default;
+    const bg = document.querySelector('.background');
+    const spans = bg.querySelectorAll('span');
+    
+    // Apply background gradient
+    bg.style.background = `linear-gradient(135deg, ${theme.bg[0]}, ${theme.bg[1]})`;
+    
+    // Update animated spans
+    spans.forEach((span, index) => {
+        const color = theme.spans[index % theme.spans.length];
+        span.style.background = color;
+        span.style.boxShadow = `0 0 30px ${color}`;
+    });
+    
+    // Add theme class to body for CSS overrides
+    document.body.className = `theme-${themeName}`;
+    state.selectedTheme = themeName;
+}
 
 // ============================================
 // LOAD QUESTIONS FOR CATEGORY
@@ -498,6 +556,10 @@ function startSelectedQuiz() {
     state.category = document.getElementById('category').value;
     state.difficulty = document.getElementById('difficulty').value;
     state.timeLeft = parseInt(document.getElementById('timeLimit').value);
+    
+    // Get selected theme and apply it
+    const theme = document.getElementById('theme').value;
+    applyTheme(theme);
 
     state.gameActive = true;
     state.isPaused = false;
@@ -796,6 +858,20 @@ function resetToStart() {
 }
 
 // ============================================
+// LIVE THEME PREVIEW (Optional)
+// ============================================
+document.addEventListener('DOMContentLoaded', function() {
+    const themeDropdown = document.getElementById('theme');
+    if (themeDropdown) {
+        themeDropdown.addEventListener('change', function() {
+            applyTheme(this.value);
+        });
+        // Apply default theme on load
+        applyTheme(themeDropdown.value || 'default');
+    }
+});
+
+// ============================================
 // KEYBOARD SHORTCUTS
 // ============================================
 document.addEventListener('keydown', (e) => {
@@ -825,4 +901,5 @@ document.addEventListener('keydown', (e) => {
 // ============================================
 console.log('🎯 Mega Quiz App loaded!');
 console.log(`📚 Categories: ${Object.keys(QUESTION_BANK).join(', ')}`);
+console.log('🎨 Themes: Galaxy, Ocean, Forest, Neon, Fire, Ice');
 console.log('💡 Keyboard shortcuts: 1-4 for answers, Space to pause, Enter to start');
