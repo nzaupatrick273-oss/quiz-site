@@ -782,6 +782,7 @@ const DOM = {
     accuracy: document.getElementById('accuracy'),
     resultTitle: document.getElementById('resultTitle'),
     resultMessage: document.getElementById('resultMessage'),
+    singlePlayerSettings: document.getElementById('singlePlayerSettings'),
     multiplayerSettings: document.getElementById('multiplayerSettings'),
     multiplayerLobby: document.getElementById('multiplayerLobby'),
     roomCodeDisplay: document.getElementById('roomCodeDisplay'),
@@ -1089,7 +1090,8 @@ function createClickParticles(x, y, isCorrect) {
 }
 
 // ============================================
-// THEME FUNCTIONS// ============================================
+// THEME FUNCTIONS
+// ============================================
 function applyTheme(themeName) {
     const theme = themeConfig[themeName] || themeConfig.default;
     const bg = document.querySelector('.background');
@@ -1480,7 +1482,12 @@ function showProfile() {
     const unlocked = user.achievements || [];
     const allAch = ACHIEVEMENTS;
     
+    // Remove any existing modal first
+    const existingModal = document.querySelector('div[data-modal="profile"]');
+    if (existingModal) existingModal.remove();
+    
     const modal = document.createElement('div');
+    modal.setAttribute('data-modal', 'profile');
     modal.style.cssText = `
         position: fixed;
         top: 0; left: 0; width: 100%; height: 100%;
@@ -1507,7 +1514,7 @@ function showProfile() {
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
             position: relative;
         ">
-            <button onclick="this.closest('div').parentElement.remove()" style="
+            <button onclick="document.querySelector('div[data-modal=\\'profile\\']').remove()" style="
                 position: absolute;
                 top: 15px;
                 right: 15px;
@@ -1588,8 +1595,8 @@ function showProfile() {
             </div>
             
             <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
-                <button onclick="this.closest('div').parentElement.remove()" class="btn-primary" style="padding: 8px 20px;">Close</button>
-                <button onclick="confirm('Delete your account permanently?') && deleteAccount() && this.closest('div').parentElement.remove()" style="
+                <button onclick="document.querySelector('div[data-modal=\\'profile\\']').remove()" class="btn-primary" style="padding: 8px 20px;">Close</button>
+                <button onclick="confirm('Delete your account permanently?') && deleteAccount() && document.querySelector('div[data-modal=\\'profile\\']').remove()" style="
                     padding: 8px 20px;
                     background: #e74c3c;
                     color: white;
@@ -1606,7 +1613,7 @@ function showProfile() {
 }
 
 // ============================================
-// MULTIPLAYER SYSTEM (Local / Same Browser)
+// MULTIPLAYER SYSTEM (Same Browser / Multiple Tabs)
 // ============================================
 const multiplayer = {
     rooms: {},
@@ -1673,10 +1680,8 @@ function startMultiplayerGame() {
     room.gameStarted = true;
     room.currentQuestion = 0;
     
-    // Reset scores
     room.players.forEach(p => room.scores[p] = 0);
     
-    // Hide lobby, start game
     DOM.multiplayerLobby.style.display = 'none';
     startSelectedQuiz();
 }
@@ -1699,7 +1704,6 @@ function updateMultiplayerLobby() {
         DOM.playerList.appendChild(badge);
     });
     
-    // Show/hide start button based on host status
     const startBtn = DOM.multiplayerLobby.querySelector('.btn-primary');
     if (startBtn) {
         startBtn.style.display = room.host === state.playerName ? 'inline-block' : 'none';
@@ -1711,7 +1715,17 @@ function updateMultiplayerLobby() {
 // ============================================
 document.getElementById('gameMode').addEventListener('change', function() {
     const mode = this.value;
-    DOM.multiplayerSettings.style.display = mode === 'multiplayer' ? 'block' : 'none';
+    if (mode === 'single') {
+        DOM.singlePlayerSettings.style.display = 'block';
+        DOM.multiplayerSettings.style.display = 'none';
+        DOM.multiplayerLobby.style.display = 'none';
+        // Reset multiplayer state
+        multiplayer.currentRoom = null;
+        multiplayer.gameStarted = false;
+    } else {
+        DOM.singlePlayerSettings.style.display = 'none';
+        DOM.multiplayerSettings.style.display = 'block';
+    }
 });
 
 // ============================================
@@ -1751,29 +1765,26 @@ function startSelectedQuiz() {
         state.playerName = playerName;
         
         if (roomCode) {
-            // Join room
             const result = joinRoom(roomCode, playerName);
             if (!result.success) {
                 alert(result.error);
                 return;
             }
         } else {
-            // Create room
             const code = createRoom(playerName);
             document.getElementById('roomCode').value = code;
             state.isHost = true;
         }
         
-        // Show lobby
         DOM.multiplayerLobby.style.display = 'block';
         updateMultiplayerLobby();
         return;
     }
     
-    // Single player
+    // ----- SINGLE PLAYER -----
     state.category = document.getElementById('category').value;
+    state.difficulty = document.getElementById('difficulty').value;
     state.timeLeft = parseInt(document.getElementById('timeLimit').value);
-    state.difficulty = 'easy'; // Default for single player
     
     const theme = document.getElementById('theme').value;
     applyTheme(theme);
@@ -2033,9 +2044,8 @@ function endQuiz() {
     DOM.resultTitle.textContent = title;
     DOM.resultMessage.textContent = message;
 
-    // Update stats
     if (accountState.currentUser) {
-        const won = correct >= total * 0.6;
+        const won = correct >= state.userAnswers.length * 0.6;
         updateStatsAfterGame(correct, state.userAnswers.length, won);
         renderAuthUI();
     }
