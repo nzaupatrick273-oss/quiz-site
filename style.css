@@ -220,7 +220,47 @@ select:focus {
 select option {
     background: #1a1a1a;
 }
+/* ============================================
+   FANCY FOOTER LABEL
+   ============================================ */
+.footer-label {
+    position: fixed;
+    bottom: 15px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-family: 'Great Vibes', cursive;
+    font-size: 1.8rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    pointer-events: none;
+    z-index: 999;
+    letter-spacing: 2px;
+    transition: color 0.5s ease, text-shadow 0.5s ease;
+}
 
+/* Make it glow slightly more on darker themes */
+.theme-galaxy .footer-label,
+.theme-neon .footer-label,
+.theme-fire .footer-label {
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+/* Make it slightly softer on bright themes */
+.theme-ocean .footer-label,
+.theme-ice .footer-label {
+    color: rgba(255, 255, 255, 0.5);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+/* Responsive adjustment for small screens */
+@media (max-width: 600px) {
+    .footer-label {
+        font-size: 1.4rem;
+        bottom: 10px;
+    }
+}
 /* ===== BUTTONS ===== */
 .btn-primary {
     padding: 14px 28px;
