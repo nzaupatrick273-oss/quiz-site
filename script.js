@@ -432,31 +432,52 @@ QUESTION_BANK.history = {
 const themeConfig = {
     default: {
         bg: ['#667eea', '#764ba2', '#f093fb'],
-        spans: ['#f093fb', '#4facfe', '#43e97b', '#fa709a']
+        spans: ['#f093fb', '#4facfe', '#43e97b', '#fa709a'],
+        font: "'Segoe UI', sans-serif",
+        glow: 'none',
+        particles: 'none'
     },
     galaxy: {
         bg: ['#0f0c29', '#302b63', '#24243e'],
-        spans: ['#00d2ff', '#3a7bd5', '#f093fb', '#4facfe']
+        spans: ['#00d2ff', '#3a7bd5', '#f093fb', '#4facfe'],
+        font: "'Orbitron', sans-serif",
+        glow: '0 0 20px rgba(0, 210, 255, 0.3)',
+        particles: 'stars'
     },
     ocean: {
         bg: ['#006994', '#0077be', '#00a8cc'],
-        spans: ['#00d2ff', '#0099cc', '#66ccff', '#33b5e5']
+        spans: ['#00d2ff', '#0099cc', '#66ccff', '#33b5e5'],
+        font: "'Quicksand', sans-serif",
+        glow: '0 0 20px rgba(0, 210, 255, 0.2)',
+        particles: 'bubbles'
     },
     forest: {
         bg: ['#134e5e', '#71b280', '#2c5e2e'],
-        spans: ['#2ecc71', '#27ae60', '#1abc9c', '#16a085']
+        spans: ['#2ecc71', '#27ae60', '#1abc9c', '#16a085'],
+        font: "'Merriweather', serif",
+        glow: '0 0 20px rgba(46, 204, 113, 0.3)',
+        particles: 'fireflies'
     },
     neon: {
         bg: ['#0d0d0d', '#1a1a2e', '#16213e'],
-        spans: ['#ff00ff', '#00ffff', '#ff6b6b', '#ffd93d']
+        spans: ['#ff00ff', '#00ffff', '#ff6b6b', '#ffd93d'],
+        font: "'Press Start 2P', cursive",
+        glow: '0 0 30px rgba(255, 0, 255, 0.5)',
+        particles: 'neon'
     },
     fire: {
         bg: ['#ff4500', '#ff6347', '#ff7f50'],
-        spans: ['#ff6b35', '#f7931e', '#ff4757', '#ff6348']
+        spans: ['#ff6b35', '#f7931e', '#ff4757', '#ff6348'],
+        font: "'Bangers', cursive",
+        glow: '0 0 25px rgba(255, 69, 0, 0.4)',
+        particles: 'embers'
     },
     ice: {
         bg: ['#a1c4fd', '#c2e9fb', '#e0f7fa'],
-        spans: ['#4fc3f7', '#81d4fa', '#b3e5fc', '#e1f5fe']
+        spans: ['#4fc3f7', '#81d4fa', '#b3e5fc', '#e1f5fe'],
+        font: "'Raleway', sans-serif",
+        glow: '0 0 20px rgba(79, 195, 247, 0.3)',
+        particles: 'snowflakes'
     }
 };
 
@@ -475,7 +496,8 @@ const state = {
     totalQuestions: 0,
     difficulty: 'easy',
     category: 'general',
-    selectedTheme: 'default'
+    selectedTheme: 'default',
+    particleInterval: null
 };
 
 // DOM Elements
@@ -501,6 +523,204 @@ const DOM = {
 const LETTERS = ['A', 'B', 'C', 'D'];
 
 // ============================================
+// SOUND EFFECTS (Audio Context)
+// ============================================
+let audioContext = null;
+
+function initAudio() {
+    if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    }
+}
+
+function playThemeSound(themeName) {
+    try {
+        initAudio();
+        
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        // Different sounds for different themes
+        const soundMap = {
+            'galaxy': { frequency: 523.25, duration: 0.3, type: 'sine' },    // C5
+            'ocean': { frequency: 392.00, duration: 0.4, type: 'sine' },      // G4
+            'forest': { frequency: 659.25, duration: 0.3, type: 'triangle' }, // E5
+            'neon': { frequency: 783.99, duration: 0.2, type: 'square' },     // G5
+            'fire': { frequency: 440.00, duration: 0.25, type: 'sawtooth' },  // A4
+            'ice': { frequency: 587.33, duration: 0.35, type: 'sine' },       // D5
+            'default': { frequency: 523.25, duration: 0.3, type: 'sine' }     // C5
+        };
+        
+        const sound = soundMap[themeName] || soundMap.default;
+        
+        oscillator.type = sound.type;
+        oscillator.frequency.value = sound.frequency;
+        
+        gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + sound.duration);
+        
+        oscillator.start(audioContext.currentTime);
+        oscillator.stop(audioContext.currentTime + sound.duration);
+        
+    } catch (e) {
+        console.log('Audio not available');
+    }
+}
+
+// ============================================
+// PARTICLE SYSTEMS
+// ============================================
+let particlesContainer = null;
+
+function createParticlesContainer() {
+    if (!particlesContainer) {
+        particlesContainer = document.createElement('div');
+        particlesContainer.className = 'particles-container';
+        particlesContainer.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        `;
+        document.body.appendChild(particlesContainer);
+    }
+    return particlesContainer;
+}
+
+function clearParticles() {
+    if (state.particleInterval) {
+        clearInterval(state.particleInterval);
+        state.particleInterval = null;
+    }
+    if (particlesContainer) {
+        particlesContainer.innerHTML = '';
+    }
+}
+
+function createParticle(type, container) {
+    const particle = document.createElement('div');
+    const size = Math.random() * 4 + 2;
+    
+    const styles = {
+        stars: {
+            css: `
+                position: absolute;
+                width: ${size}px;
+                height: ${size}px;
+                background: white;
+                border-radius: 50%;
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+                animation: starFloat ${5 + Math.random() * 5}s linear infinite;
+                opacity: ${0.3 + Math.random() * 0.7};
+                left: ${Math.random() * 100}%;
+                top: ${Math.random() * 100}%;
+            `
+        },
+        bubbles: {
+            css: `
+                position: absolute;
+                width: ${size * 2}px;
+                height: ${size * 2}px;
+                background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), rgba(0,210,255,0.2));
+                border-radius: 50%;
+                border: 1px solid rgba(255, 255, 255, 0.3);
+                animation: bubbleFloat ${6 + Math.random() * 4}s linear infinite;
+                left: ${Math.random() * 100}%;
+                bottom: -10%;
+            `
+        },
+        fireflies: {
+            css: `
+                position: absolute;
+                width: ${size}px;
+                height: ${size}px;
+                background: #2ecc71;
+                border-radius: 50%;
+                box-shadow: 0 0 20px rgba(46, 204, 113, 0.8), 0 0 40px rgba(46, 204, 113, 0.4);
+                animation: fireflyFloat ${4 + Math.random() * 6}s ease-in-out infinite;
+                left: ${Math.random() * 100}%;
+                top: ${Math.random() * 100}%;
+                opacity: ${0.5 + Math.random() * 0.5};
+            `
+        },
+        neon: {
+            css: `
+                position: absolute;
+                width: ${size}px;
+                height: ${size}px;
+                background: ${['#ff00ff', '#00ffff', '#ff6b6b', '#ffd93d'][Math.floor(Math.random() * 4)]};
+                border-radius: 50%;
+                box-shadow: 0 0 30px currentColor, 0 0 60px currentColor;
+                animation: neonFloat ${3 + Math.random() * 3}s linear infinite;
+                left: ${Math.random() * 100}%;
+                top: ${Math.random() * 100}%;
+                opacity: ${0.6 + Math.random() * 0.4};
+            `
+        },
+        embers: {
+            css: `
+                position: absolute;
+                width: ${size}px;
+                height: ${size}px;
+                background: ${['#ff6b35', '#f7931e', '#ff4757'][Math.floor(Math.random() * 3)]};
+                border-radius: 50%;
+                box-shadow: 0 0 15px rgba(255, 69, 0, 0.8);
+                animation: emberFloat ${3 + Math.random() * 4}s ease-out infinite;
+                left: ${Math.random() * 100}%;
+                bottom: -10%;
+            `
+        },
+        snowflakes: {
+            css: `
+                position: absolute;
+                width: ${size}px;
+                height: ${size}px;
+                background: white;
+                border-radius: 50%;
+                box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+                animation: snowFloat ${8 + Math.random() * 5}s linear infinite;
+                left: ${Math.random() * 100}%;
+                top: -10%;
+                opacity: ${0.5 + Math.random() * 0.5};
+            `
+        }
+    };
+    
+    const style = styles[type];
+    if (style) {
+        particle.style.cssText = style.css;
+        container.appendChild(particle);
+    }
+}
+
+function startParticles(type) {
+    clearParticles();
+    if (type === 'none') return;
+    
+    const container = createParticlesContainer();
+    const count = type === 'neon' ? 30 : type === 'stars' ? 80 : 40;
+    
+    // Create initial particles
+    for (let i = 0; i < count; i++) {
+        createParticle(type, container);
+    }
+    
+    // Continuously add new particles
+    state.particleInterval = setInterval(() => {
+        if (container.children.length < count * 1.5) {
+            createParticle(type, container);
+        }
+    }, 1000);
+}
+
+// ============================================
 // THEME FUNCTIONS
 // ============================================
 function applyTheme(themeName) {
@@ -518,8 +738,39 @@ function applyTheme(themeName) {
         span.style.boxShadow = `0 0 30px ${color}`;
     });
     
-    // Add theme class to body for CSS overrides
+    // Apply theme-specific fonts
+    document.documentElement.style.setProperty('--theme-font', theme.font);
+    document.documentElement.style.setProperty('--theme-glow', theme.glow);
+    
+    // Add theme class to body
     document.body.className = `theme-${themeName}`;
+    
+    // Update UI elements with glow
+    const cards = document.querySelectorAll('.settings-card, .result-card, .quiz-area');
+    cards.forEach(card => {
+        if (theme.glow !== 'none') {
+            card.style.boxShadow = theme.glow;
+        } else {
+            card.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.1)';
+        }
+    });
+    
+    // Update button styles
+    const buttons = document.querySelectorAll('.btn-primary, .answer-btn');
+    buttons.forEach(btn => {
+        if (theme.glow !== 'none') {
+            btn.style.textShadow = theme.glow;
+        } else {
+            btn.style.textShadow = 'none';
+        }
+    });
+    
+    // Start particles
+    startParticles(theme.particles);
+    
+    // Play theme sound
+    playThemeSound(themeName);
+    
     state.selectedTheme = themeName;
 }
 
@@ -855,12 +1106,73 @@ function resetToStart() {
     DOM.startScreen.style.display = 'block';
     state.gameActive = false;
     clearInterval(state.timer);
+    clearParticles();
 }
 
 // ============================================
-// LIVE THEME PREVIEW (Optional)
+// LIVE THEME PREVIEW
 // ============================================
 document.addEventListener('DOMContentLoaded', function() {
+    // Add CSS for animations
+    const styleSheet = document.createElement('style');
+    styleSheet.textContent = `
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Quicksand:wght@400;700&family=Merriweather:wght@400;700&family=Press+Start+2P&family=Bangers&family=Raleway:wght@400;700&display=swap');
+        
+        body {
+            font-family: var(--theme-font, 'Segoe UI', sans-serif);
+            transition: font-family 0.5s ease;
+        }
+        
+        .settings-card, .result-card, .quiz-area {
+            transition: box-shadow 0.5s ease;
+        }
+        
+        .btn-primary, .answer-btn {
+            transition: text-shadow 0.5s ease;
+        }
+        
+        @keyframes starFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(50px, -50px) scale(1.2); }
+            50% { transform: translate(-30px, 80px) scale(0.8); }
+            75% { transform: translate(70px, 30px) scale(1.1); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+        
+        @keyframes bubbleFloat {
+            0% { transform: translate(0, 0) scale(0.5); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.6; }
+            100% { transform: translate(0, -120vh) scale(1.2); opacity: 0; }
+        }
+        
+        @keyframes fireflyFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+            25% { transform: translate(30px, -40px) scale(1.3); opacity: 1; }
+            50% { transform: translate(-20px, 20px) scale(0.8); opacity: 0.7; }
+            75% { transform: translate(40px, 30px) scale(1.2); opacity: 0.9; }
+        }
+        
+        @keyframes neonFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(40px, -30px) scale(1.2); }
+            66% { transform: translate(-30px, 40px) scale(0.8); }
+            100% { transform: translate(0, 0) scale(1); }
+        }
+        
+        @keyframes emberFloat {
+            0% { transform: translate(0, 0) scale(0.5); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translate(calc(-50px + 100px * var(--x, 0)), -120vh) scale(1.5); opacity: 0; }
+        }
+        
+        @keyframes snowFloat {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(calc(-50px + 100px * var(--x, 0)), 120vh) rotate(360deg); }
+        }
+    `;
+    document.head.appendChild(styleSheet);
+    
     const themeDropdown = document.getElementById('theme');
     if (themeDropdown) {
         themeDropdown.addEventListener('change', function() {
@@ -903,3 +1215,5 @@ console.log('🎯 Mega Quiz App loaded!');
 console.log(`📚 Categories: ${Object.keys(QUESTION_BANK).join(', ')}`);
 console.log('🎨 Themes: Galaxy, Ocean, Forest, Neon, Fire, Ice');
 console.log('💡 Keyboard shortcuts: 1-4 for answers, Space to pause, Enter to start');
+console.log('🔊 Sound effects enabled for theme switching');
+console.log('✨ Particle effects enabled for each theme');
