@@ -18,105 +18,116 @@
         <!-- Title -->
         <h1>🎯 Quiz Master Pro</h1>
 
-        <!-- START SCREEN -->
-        <div class="start-screen" id="startScreen">
-            
-            <!-- ACCOUNT SECTION -->
-            <div id="authContainer"></div>
+ <!-- START SCREEN -->
+ <div class="start-screen" id="startScreen">
+    
+    <!-- ACCOUNT SECTION -->
+    <div id="authContainer"></div>
 
-            <div class="settings-card">
-                <div class="form-group">
-                    <label for="category">📚 Category</label>
-                    <select id="category">
-                        <option value="bible">📖 Bible</option>
-                        <option value="general">🎲 General Knowledge</option>
-                        <option value="music">🎵 Music</option>
-                        <option value="movies">🎬 Movies</option>
-                        <option value="religion">🕊️ Religion</option>
-                        <option value="travel">✈️ Travel</option>
-                        <option value="physics">🔬 Physics</option>
-                        <option value="survey">📊 Survey</option>
-                        <option value="online">🌐 Online</option>
-                        <option value="etiquette">🤝 Etiquette</option>
-                        <option value="talents">🎭 Talents</option>
-                        <option value="geography">🌍 Geography</option>
-                        <option value="technology">💻 Technology</option>
-                        <option value="history">📜 History</option>
-                        <option value="sports">⚽ Sports</option>
-                        <option value="science">🧪 Science</option>
-                        <option value="literature">📚 Literature</option>
-                        <option value="animals">🐾 Animals</option>
-                        <option value="space">🚀 Space</option>
-                        <option value="food">🍕 Food</option>
-                    </select>
-                </div>
+    <div class="settings-card">
+        <div class="form-group">
+            <label for="category">📚 Category</label>
+            <select id="category">
+                <option value="bible">📖 Bible</option>
+                <option value="general">🎲 General Knowledge</option>
+                <option value="music">🎵 Music</option>
+                <option value="movies">🎬 Movies</option>
+                <option value="religion">🕊️ Religion</option>
+                <option value="travel">✈️ Travel</option>
+                <option value="physics">🔬 Physics</option>
+                <option value="survey">📊 Survey</option>
+                <option value="online">🌐 Online</option>
+                <option value="etiquette">🤝 Etiquette</option>
+                <option value="talents">🎭 Talents</option>
+                <option value="geography">🌍 Geography</option>
+                <option value="technology">💻 Technology</option>
+                <option value="history">📜 History</option>
+                <option value="sports">⚽ Sports</option>
+                <option value="science">🧪 Science</option>
+                <option value="literature">📚 Literature</option>
+                <option value="animals">🐾 Animals</option>
+                <option value="space">🚀 Space</option>
+                <option value="food">🍕 Food</option>
+            </select>
+        </div>
 
-                <div class="form-group">
-                    <label for="theme">🎨 Theme</label>
-                    <select id="theme">
-                        <option value="default">🌈 Default</option>
-                        <option value="galaxy">🌌 Galaxy</option>
-                        <option value="ocean">🌊 Ocean</option>
-                        <option value="forest">🌳 Forest</option>
-                        <option value="neon">🎨 Neon</option>
-                        <option value="fire">🔥 Fire</option>
-                        <option value="ice">❄ Ice</option>
-                    </select>
-                </div>
+        <div class="form-group">
+            <label for="theme">🎨 Theme</label>
+            <select id="theme">
+                <option value="default">🌈 Default</option>
+                <option value="galaxy">🌌 Galaxy</option>
+                <option value="ocean">🌊 Ocean</option>
+                <option value="forest">🌳 Forest</option>
+                <option value="neon">🎨 Neon</option>
+                <option value="fire">🔥 Fire</option>
+                <option value="ice">❄ Ice</option>
+            </select>
+        </div>
 
-                <div class="form-group">
-                    <label for="gameMode">🎮 Game Mode</label>
-                    <select id="gameMode">
-                        <option value="single">🧑 Single Player</option>
-                        <option value="multiplayer">👥 Multiplayer</option>
-                    </select>
-                </div>
+        <div class="form-group">
+            <label for="gameMode">🎮 Game Mode</label>
+            <select id="gameMode">
+                <option value="single">🧑 Single Player</option>
+                <option value="multiplayer">👥 Multiplayer</option>
+            </select>
+        </div>
 
-                <!-- Multiplayer settings (hidden by default) -->
-                <div id="multiplayerSettings" style="display: none;">
-                    <div class="form-group">
-                        <label for="roomCode">🔑 Room Code</label>
-                        <input type="text" id="roomCode" placeholder="Enter room code or leave blank to create" style="
-                            padding: 8px 12px;
-                            border-radius: 8px;
-                            border: 1px solid rgba(255,255,255,0.2);
-                            background: rgba(255,255,255,0.1);
-                            color: white;
-                            width: 100%;
-                            font-size: 1rem;
-                        ">
-                    </div>
-                    <div class="form-group">
-                        <label for="playerName">👤 Your Name</label>
-                        <input type="text" id="playerName" placeholder="Enter your display name" style="
-                            padding: 8px 12px;
-                            border-radius: 8px;
-                            border: 1px solid rgba(255,255,255,0.2);
-                            background: rgba(255,255,255,0.1);
-                            color: white;
-                            width: 100%;
-                            font-size: 1rem;
-                        ">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="timeLimit">⏱️ Time Limit</label>
-                    <select id="timeLimit">
-                        <option value="30">30 seconds</option>
-                        <option value="45" selected>45 seconds</option>
-                        <option value="60">60 seconds</option>
-                        <option value="90">90 seconds</option>
-                        <option value="120">120 seconds</option>
-                    </select>
-                </div>
-
-                <button onclick="startSelectedQuiz()" class="btn-primary">
-                    🚀 Start Quiz
-                </button>
+        <!-- SINGLE PLAYER SETTINGS -->
+        <div id="singlePlayerSettings">
+            <div class="form-group">
+                <label for="difficulty">📊 Difficulty</label>
+                <select id="difficulty">
+                    <option value="easy">🟢 Easy</option>
+                    <option value="medium">🟡 Medium</option>
+                    <option value="hard">🔴 Hard</option>
+                </select>
             </div>
         </div>
 
+        <!-- MULTIPLAYER SETTINGS (hidden by default) -->
+        <div id="multiplayerSettings" style="display: none;">
+            <div class="form-group">
+                <label for="roomCode">🔑 Room Code</label>
+                <input type="text" id="roomCode" placeholder="Enter room code or leave blank to create" style="
+                    padding: 8px 12px;
+                    border-radius: 8px;
+                    border: 1px solid rgba(255,255,255,0.2);
+                    background: rgba(255,255,255,0.1);
+                    color: white;
+                    width: 100%;
+                    font-size: 1rem;
+                ">
+            </div>
+            <div class="form-group">
+                <label for="playerName">👤 Your Name</label>
+                <input type="text" id="playerName" placeholder="Enter your display name" style="
+                    padding: 8px 12px;
+                    border-radius: 8px;
+                    border: 1px solid rgba(255,255,255,0.2);
+                    background: rgba(255,255,255,0.1);
+                    color: white;
+                    width: 100%;
+                    font-size: 1rem;
+                ">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="timeLimit">⏱️ Time Limit</label>
+            <select id="timeLimit">
+                <option value="30">30 seconds</option>
+                <option value="45" selected>45 seconds</option>
+                <option value="60">60 seconds</option>
+                <option value="90">90 seconds</option>
+                <option value="120">120 seconds</option>
+            </select>
+        </div>
+
+        <button onclick="startSelectedQuiz()" class="btn-primary">
+            🚀 Start Quiz
+        </button>
+    </div>
+</div>
         <!-- QUIZ SCREEN -->
         <div id="quizArea" class="quiz-area" style="display:none;">
             <!-- Progress Bar -->
