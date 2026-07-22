@@ -757,11 +757,7 @@ const state = {
     ambientInterval: null,
     audioContext: null,
     isPlayingMusic: false,
-    gameMode: 'single',
-    roomCode: null,
-    playerName: null,
-    players: [],
-    isHost: false
+    gameMode: 'single'
 };
 
 // DOM Elements
@@ -782,12 +778,7 @@ const DOM = {
     accuracy: document.getElementById('accuracy'),
     resultTitle: document.getElementById('resultTitle'),
     resultMessage: document.getElementById('resultMessage'),
-    singlePlayerSettings: document.getElementById('singlePlayerSettings'),
-    multiplayerSettings: document.getElementById('multiplayerSettings'),
-    multiplayerLobby: document.getElementById('multiplayerLobby'),
-    roomCodeDisplay: document.getElementById('roomCodeDisplay'),
-    playerCount: document.getElementById('playerCount'),
-    playerList: document.getElementById('playerList')
+    singlePlayerSettings: document.getElementById('singlePlayerSettings')
 };
 
 const LETTERS = ['A', 'B', 'C', 'D'];
@@ -1482,7 +1473,6 @@ function showProfile() {
     const unlocked = user.achievements || [];
     const allAch = ACHIEVEMENTS;
     
-    // Remove any existing modal first
     const existingModal = document.querySelector('div[data-modal="profile"]');
     if (existingModal) existingModal.remove();
     
@@ -1613,118 +1603,14 @@ function showProfile() {
 }
 
 // ============================================
-// MULTIPLAYER SYSTEM (Same Browser / Multiple Tabs)
-// ============================================
-const multiplayer = {
-    rooms: {},
-    currentRoom: null,
-    gameStarted: false
-};
-
-function generateRoomCode() {
-    return Math.random().toString(36).substring(2, 8).toUpperCase();
-}
-
-function createRoom(playerName) {
-    const roomCode = generateRoomCode();
-    multiplayer.rooms[roomCode] = {
-        code: roomCode,
-        host: playerName,
-        players: [playerName],
-        category: document.getElementById('category').value,
-        timeLimit: parseInt(document.getElementById('timeLimit').value),
-        gameStarted: false,
-        currentQuestion: 0,
-        scores: {}
-    };
-    multiplayer.currentRoom = roomCode;
-    multiplayer.rooms[roomCode].scores[playerName] = 0;
-    return roomCode;
-}
-
-function joinRoom(roomCode, playerName) {
-    if (!multiplayer.rooms[roomCode]) {
-        return { success: false, error: "Room not found" };
-    }
-    if (multiplayer.rooms[roomCode].gameStarted) {
-        return { success: false, error: "Game already started" };
-    }
-    if (multiplayer.rooms[roomCode].players.includes(playerName)) {
-        return { success: false, error: "Name already taken" };
-    }
-    multiplayer.rooms[roomCode].players.push(playerName);
-    multiplayer.rooms[roomCode].scores[playerName] = 0;
-    multiplayer.currentRoom = roomCode;
-    return { success: true };
-}
-
-function getRoomPlayers() {
-    if (!multiplayer.currentRoom || !multiplayer.rooms[multiplayer.currentRoom]) return [];
-    return multiplayer.rooms[multiplayer.currentRoom].players;
-}
-
-function getPlayerCount() {
-    return getRoomPlayers().length;
-}
-
-function isHost() {
-    if (!multiplayer.currentRoom || !multiplayer.rooms[multiplayer.currentRoom]) return false;
-    return multiplayer.rooms[multiplayer.currentRoom].host === state.playerName;
-}
-
-function startMultiplayerGame() {
-    if (!isHost()) return;
-    if (!multiplayer.currentRoom || !multiplayer.rooms[multiplayer.currentRoom]) return;
-    
-    const room = multiplayer.rooms[multiplayer.currentRoom];
-    room.gameStarted = true;
-    room.currentQuestion = 0;
-    
-    room.players.forEach(p => room.scores[p] = 0);
-    
-    DOM.multiplayerLobby.style.display = 'none';
-    startSelectedQuiz();
-}
-
-function updateMultiplayerLobby() {
-    const roomCode = multiplayer.currentRoom;
-    if (!roomCode) return;
-    
-    const room = multiplayer.rooms[roomCode];
-    if (!room) return;
-    
-    DOM.roomCodeDisplay.textContent = roomCode;
-    DOM.playerCount.textContent = room.players.length;
-    
-    DOM.playerList.innerHTML = '';
-    room.players.forEach(player => {
-        const badge = document.createElement('span');
-        badge.className = 'player-badge' + (player === room.host ? ' host' : '');
-        badge.innerHTML = `${player === room.host ? '👑 ' : ''}${player}`;
-        DOM.playerList.appendChild(badge);
-    });
-    
-    const startBtn = DOM.multiplayerLobby.querySelector('.btn-primary');
-    if (startBtn) {
-        startBtn.style.display = room.host === state.playerName ? 'inline-block' : 'none';
-    }
-}
-
-// ============================================
 // GAME MODE HANDLER
 // ============================================
 document.getElementById('gameMode').addEventListener('change', function() {
     const mode = this.value;
     if (mode === 'single') {
         DOM.singlePlayerSettings.style.display = 'block';
-        DOM.multiplayerSettings.style.display = 'none';
-        DOM.multiplayerLobby.style.display = 'none';
-        // Reset multiplayer state
-        multiplayer.currentRoom = null;
-        multiplayer.gameStarted = false;
     } else {
         DOM.singlePlayerSettings.style.display = 'none';
-        DOM.multiplayerSettings.style.display = 'block';
     }
 });
 
@@ -1759,25 +1645,49 @@ function startSelectedQuiz() {
     state.gameMode = mode;
     
     if (mode === 'multiplayer') {
-        const roomCode = document.getElementById('roomCode').value.trim().toUpperCase();
-        const playerName = document.getElementById('playerName').value.trim() || accountState.currentUser?.username || 'Player';
+        // Show Coming Soon message instead of starting multiplayer
+        const comingSoonModal = document.createElement('div');
+        comingSoonModal.style.cssText = `
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        `;
         
-        state.playerName = playerName;
+        comingSoonModal.innerHTML = `
+            <div style="
+                background: linear-gradient(135deg, #1a1a2e, #16213e);
+                padding: 40px;
+                border-radius: 20px;
+                max-width: 400px;
+                width: 90%;
+                text-align: center;
+                color: white;
+                border: 1px solid rgba(255,255,255,0.1);
+                box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+                position: relative;
+            ">
+                <div style="font-size: 4rem; margin-bottom: 15px;">🚧</div>
+                <h2 style="margin: 0 0 10px 0;">Multiplayer Coming Soon!</h2>
+                <p style="color: #95a5a6; margin: 0 0 20px 0; line-height: 1.6;">
+                    We're working hard to bring you an amazing multiplayer experience.<br>
+                    Stay tuned for the update!
+                </p>
+                <button onclick="this.closest('div[style]').parentElement.remove()" class="btn-primary" style="padding: 10px 30px;">
+                    👍 Got it!
+                </button>
+                <div style="margin-top: 15px; font-size: 0.8rem; color: #667eea;">
+                    🔧 Estimated release: Soon
+                </div>
+            </div>
+        `;
         
-        if (roomCode) {
-            const result = joinRoom(roomCode, playerName);
-            if (!result.success) {
-                alert(result.error);
-                return;
-            }
-        } else {
-            const code = createRoom(playerName);
-            document.getElementById('roomCode').value = code;
-            state.isHost = true;
-        }
-        
-        DOM.multiplayerLobby.style.display = 'block';
-        updateMultiplayerLobby();
+        document.body.appendChild(comingSoonModal);
         return;
     }
     
@@ -2072,7 +1982,6 @@ function resetToStart() {
     DOM.quizArea.style.display = 'none';
     DOM.resultScreen.style.display = 'none';
     DOM.startScreen.style.display = 'block';
-    DOM.multiplayerLobby.style.display = 'none';
     state.gameActive = false;
     state.isPlayingMusic = false;
     clearInterval(state.timer);
@@ -2120,12 +2029,10 @@ window.loginAsGuest = loginAsGuest;
 window.logoutAccount = logoutAccount;
 window.showProfile = showProfile;
 window.deleteAccount = deleteAccount;
-window.startMultiplayerGame = startMultiplayerGame;
 
 console.log('🎯 Quiz Master Pro loaded!');
 console.log(`📚 Categories: ${Object.keys(QUESTION_BANK).join(', ')}`);
 console.log('🎨 Themes: Galaxy, Ocean, Forest, Neon, Fire, Ice');
-console.log('👥 Multiplayer: Local (same browser)');
 console.log('🔊 Sound effects, ambient sounds, and background music');
 console.log('✨ Particle effects for each theme');
 console.log('🏅 Achievement system with 12 achievements');
