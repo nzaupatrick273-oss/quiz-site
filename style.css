@@ -688,7 +688,40 @@ select option {
         font-size: 1rem;
     }
 }
+/* Theme-specific color overrides */
+.theme-galaxy .btn-primary { background: linear-gradient(135deg, #00d2ff, #3a7bd5); }
+.theme-ocean .btn-primary { background: linear-gradient(135deg, #00d2ff, #0099cc); }
+.theme-forest .btn-primary { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+.theme-neon .btn-primary { background: linear-gradient(135deg, #ff00ff, #00ffff); }
+.theme-fire .btn-primary { background: linear-gradient(135deg, #ff6b35, #f7931e); }
+.theme-ice .btn-primary { background: linear-gradient(135deg, #4fc3f7, #81d4fa); }
 
+/* Update card backgrounds per theme */
+.theme-galaxy .settings-card,
+.theme-galaxy .result-card { background: rgba(15, 12, 41, 0.9); color: #fff; }
+
+.theme-ocean .settings-card,
+.theme-ocean .result-card { background: rgba(0, 105, 148, 0.9); color: #fff; }
+
+.theme-forest .settings-card,
+.theme-forest .result-card { background: rgba(19, 78, 94, 0.9); color: #fff; }
+
+.theme-neon .settings-card,
+.theme-neon .result-card { background: rgba(13, 13, 13, 0.9); color: #fff; border: 1px solid #ff00ff; }
+
+.theme-fire .settings-card,
+.theme-fire .result-card { background: rgba(255, 69, 0, 0.9); color: #fff; }
+
+.theme-ice .settings-card,
+.theme-ice .result-card { background: rgba(161, 196, 253, 0.9); color: #1a1a1a; }
+
+/* Timer color changes per theme */
+.theme-galaxy .timer { color: #00d2ff; }
+.theme-ocean .timer { color: #00d2ff; }
+.theme-forest .timer { color: #2ecc71; }
+.theme-neon .timer { color: #ff00ff; }
+.theme-fire .timer { color: #ff6b35; }
+.theme-ice .timer { color: #4fc3f7; }
 /* ===== VERTICAL CENTERING FOR VERY TALL SCREENS ===== */
 @media (min-height: 900px) {
     body {
